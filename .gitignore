@@ -1,0 +1,15 @@
+.vs/
+App_Start/
+Content/
+GMap.csproj
+*.user
+*.sln
+*.asax
+Global.asax.cs
+Properties/
+Scripts/
+*.config
+bin/
+fonts/
+obj/
+packages/
