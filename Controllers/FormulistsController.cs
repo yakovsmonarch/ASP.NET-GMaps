@@ -46,10 +46,18 @@ namespace GMap.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,nickname,number,address,lat,lgt,foto")] Formulist formulist)
+        public ActionResult Create([Bind(Include = "id,nickname,number,address,lat,lgt,photo")] Formulist formulist)
         {
             if (ModelState.IsValid)
             {
+                MapsManager map = new MapsManager();
+                map.ParseAddress(formulist.address);
+                formulist.lat = map.Lat;
+                formulist.lgt = map.Lng;
+                formulist.foto = "https://www.videosharp.info/users/" + 
+                    formulist.number + "/avatar/" + 
+                    formulist.number + "_avatar_1.jpg";
+
                 db.MyFormulist.Add(formulist);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,10 +86,14 @@ namespace GMap.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,nickname,number,address,lat,lgt,foto")] Formulist formulist)
+        public ActionResult Edit([Bind(Include = "id,nickname,number,address,lat,lgt,photo")] Formulist formulist)
         {
             if (ModelState.IsValid)
             {
+                MapsManager map = new MapsManager();
+                map.ParseAddress(formulist.address);
+                formulist.lat = map.Lat;
+                formulist.lgt = map.Lng;
                 db.Entry(formulist).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
